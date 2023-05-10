@@ -1,54 +1,110 @@
-char t;
+// 5th pin 3 and 4th mototr red
+//9th pin 1 and 2 motor dark green
+int A=9; // dark green
+int B=5;
+int speed;
+
+
+
+char input;     // to store input character received via BT.
+
+void setup()
+{
+  Serial.begin(9600);  
+  pinMode(4, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(9, OUTPUT);
+  
+  }
+
+void loop()
+{
+  int potentiometer = analogRead(A0);
+  int potent = potentiometer/4;
+
+   analogWrite(5, potent);
+   analogWrite(9, potent);
+
+  speed = 255;
+  while(Serial.available())
+  {
+    input = Serial.read();
+    if(input == 'F')
+    {
+      right();//left
+    }
+
+    else if (input== 'R')
+    {
+        forward();
+
+      
+    }
+
+    else if (input== 'L')
+    {
+      backward();
+
+    
+    }  
+
+    else if (input== 'G')
+    {
+      left();
+
+    
+    }  
+ else if (input== 'S')
+    {
+      stop();
+
+    
+    }  
+
  
-void setup() {
-pinMode(9,OUTPUT);   //left motors forward
-pinMode(10,OUTPUT);   //left motors reverse
-pinMode(11,OUTPUT);   //right motors forward
-pinMode(12,OUTPUT);   //right motors reverse
- 
-Serial.begin(9600);
- 
+
+  }
+
+}  
+void forward()
+  {
+  digitalWrite(6, LOW  );
+  digitalWrite(4, HIGH);
+  digitalWrite(10, HIGH);
+  digitalWrite(11, LOW);
 }
- 
-void loop() {
-if(Serial.available()){
-  t = Serial.read();
-  Serial.println(t);
+
+void stop()
+  {
+  digitalWrite(6, LOW );
+  digitalWrite(4, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
 }
- 
-if(t == '1'){            //move forward(all motors rotate in forward direction)
-  digitalWrite(9,HIGH);
-  digitalWrite(10,LOW);
-  digitalWrite(11,HIGH);
-  digitalWrite(12,LOW);
+
+void backward()
+  {
+  digitalWrite(6, HIGH  );
+  digitalWrite(4, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, HIGH);
 }
- 
-else if(t == '2'){      //move reverse (all motors rotate in reverse direction)
-  digitalWrite(9,LOW);
-  digitalWrite(10,HIGH);
-  digitalWrite(11,LOW);
-  digitalWrite(12,HIGH);
+
+void right()
+  {
+  digitalWrite(6, HIGH  );
+  digitalWrite(4, LOW);
+  digitalWrite(10, HIGH);
+  digitalWrite(11, LOW);
 }
- 
-else if(t == '3'){      //turn right (left side motors rotate in forward direction, right side motors doesn't rotate)
-  digitalWrite(9,LOW);
-  digitalWrite(10,LOW);
-  digitalWrite(11,HIGH);
-  digitalWrite(12,LOW);
-}
- 
-else if(t == '4'){      //turn left (right side motors rotate in forward direction, left side motors doesn't rotate)
-  digitalWrite(9,HIGH);
-  digitalWrite(10,LOW);
-  digitalWrite(11,LOW);
-  digitalWrite(12,LOW);
-}
- 
-else if(t == '5'){      //STOP (all motors stop)
-  digitalWrite(9,LOW);
-  digitalWrite(10,LOW);
-  digitalWrite(11,LOW);
-  digitalWrite(12,LOW);
-}
-delay(100);
+
+void left()
+  {
+  digitalWrite(6, LOW );
+  digitalWrite(4, HIGH);
+  digitalWrite(10, LOW);
+  digitalWrite(11, HIGH);
 }
